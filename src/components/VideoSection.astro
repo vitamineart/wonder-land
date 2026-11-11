@@ -2,7 +2,7 @@
 import { getImage } from 'astro:assets';
 import posterSrc from '../assets/images/main-video-poster.jpg';
 
-const poster = await getImage({ src: posterSrc, width: 1400, format: 'webp', quality: 72 });
+const poster = await getImage({ src: posterSrc, width: 1400, format: 'webp', quality: 72, layout: 'none' });
 ---
 
 <section class="video-section bg-lightgray" aria-labelledby="video-title">

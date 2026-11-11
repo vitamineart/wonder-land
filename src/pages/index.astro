@@ -13,12 +13,19 @@ import imgProject from '../assets/images/project.jpg';
 import imgKibbutz from '../assets/images/kibbutz.jpg';
 import imgPalaces from '../assets/images/winter-palaces.jpg';
 import imgDeveloper from '../assets/images/harei-zahav.png';
+import { heroPoster } from '../lib/hero-media';
+
+const poster = await heroPoster();
 ---
 
 <Base
   title="מצוק יעלים — לגור באחד מפלאי תבל | קיבוץ מצפה שלם"
   description="פרויקט המגורים החדש בקיבוץ מצפה שלם: בתים אקולוגיים בהשראת ארמונות החורף, מעל חופי ים המלח. השאירו פרטים ונחזור אליכם."
 >
+  <Fragment slot="head">
+    <!-- Hero poster is the LCP element: fetch it first -->
+    <link rel="preload" as="image" type="image/webp" href={poster.src} fetchpriority="high" />
+  </Fragment>
   <Navbar />
 
   <main id="main">

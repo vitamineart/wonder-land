@@ -11,7 +11,7 @@ interface Props {
 }
 
 const { title, description } = Astro.props;
-const og = await getImage({ src: ogSource, width: 1200, format: 'jpg' });
+const og = await getImage({ src: ogSource, width: 1200, format: 'jpg', layout: 'none' });
 const ogUrl = new URL(og.src, Astro.site ?? Astro.url).href;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url).href;
 ---
@@ -34,6 +34,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url).href;
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogUrl} />
     <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Page-specific preloads (e.g. the hero poster) -->
+    <slot name="head" />
 
     <!-- Mark JS as available before first paint so reveal animations don't flash -->
     <script is:inline>document.documentElement.classList.add('js');</script>
