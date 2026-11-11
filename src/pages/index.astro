@@ -1,0 +1,109 @@
+---
+import Base from '../layouts/Base.astro';
+import Navbar from '../components/Navbar.astro';
+import Hero from '../components/Hero.astro';
+import LeadForm from '../components/LeadForm.astro';
+import FeatureSection from '../components/FeatureSection.astro';
+import VideoSection from '../components/VideoSection.astro';
+import Cards from '../components/Cards.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+
+import imgProject from '../assets/images/project.jpg';
+import imgKibbutz from '../assets/images/kibbutz.jpg';
+import imgPalaces from '../assets/images/winter-palaces.jpg';
+import imgDeveloper from '../assets/images/harei-zahav.png';
+---
+
+<Base
+  title="מצוק יעלים — לגור באחד מפלאי תבל | קיבוץ מצפה שלם"
+  description="פרויקט המגורים החדש בקיבוץ מצפה שלם: בתים אקולוגיים בהשראת ארמונות החורף, מעל חופי ים המלח. השאירו פרטים ונחזור אליכם."
+>
+  <Navbar />
+
+  <main id="main">
+    <Hero />
+
+    <section class="lead bg-lightgray" aria-labelledby="lead-title">
+      <h2 id="lead-title" class="lead-title text-center" data-reveal="down" style="--delay:.4s">שנשב לקפה?</h2>
+      <div class="container">
+        <LeadForm formName="lead" idPrefix="lead" buttonLabel="תחזרו אלי" />
+      </div>
+    </section>
+
+    <FeatureSection id="project" image={imgProject} imageAlt="הדמיית שכונת מצוק יעלים">
+      <h2 class="section-title text-accent text-big">פרויקט “מצוק יעלים”</h2>
+      <p class="subheader">
+        פרויקט המגורים החדש בקיבוץ מצפה שלם, “מצוק יעלים” נותן לכם את המרחב, החופש, והקהילה שתמיד רציתם מסביבכם
+      </p>
+      <p>
+        פרויקט מצוק יעלים הוא פרי שיתוף פעולה של קיבוץ מצפה שלם, חברת הרי זהב והאדריכל כפיר וקס. הפרויקט מאופיין
+        בתכנון ייחודי וחדשני אשר שם דגש רב להתאים את השכונה למיקומה הייחודי. הבתים מתוכננים ע"פ תפיסות מתקדמות של
+        הבנייה האקולוגית תוך דגש על ההתמזגות של השכונה בנופו של מצוק ההעתקים המרשים.
+      </p>
+    </FeatureSection>
+
+    <VideoSection />
+
+    <FeatureSection id="kibbutz" image={imgKibbutz} imageAlt="קיבוץ מצפה שלם ונוף ים המלח" imageSide="start" imageFirstOnMobile>
+      <h2 class="section-title">קיבוץ מצפה שלם</h2>
+      <p class="subheader">
+        מעל חופי השלווה של ים המלח, צמוד למצוק ההעתקים, בלב פלא טבע עולמי, בין נחל דרגות לקניון נחל החצצון, שוכן
+        לו קיבוץ מצפה שלם, הצופה אל הרי מואב.
+      </p>
+      <p>
+        קהילת מצפה שלם היא קהילה איכותית, מרתקת, תומכת ויוצרת. הקהילה שמה דגש רב על נושא החינוך, מפעילה מסגרות
+        מקצועיות ועוטפות בגיל הרך ומסגרות ערכיות עם חוויות מעשירות לילדי בית הספר. מערכות החינוך באזור גם הן מהמעלה
+        הראשונה, כיתות קטנות בבתי הספר ומגוון אפשרויות בחירה. המועצה מפעילה מערכת חוגים אזורית הכוללת הסעות והפעלת
+        קייטנות בחופשות.
+      </p>
+      <a href="#contacts" class="link-arrow">ליצירת קשר</a>
+    </FeatureSection>
+
+    <FeatureSection id="homes" image={imgPalaces} imageAlt="דגם בית ארמונות החורף" imageFirstOnMobile gray>
+      <h2 class="section-title">דגמי ״ארמונות החורף״</h2>
+      <p>
+        עוד מימי קדם נמשך האדם אל סגולותיו המיוחדות של מדבר יהודה וצפון ים המלח. הקרוב לירושלים ומרכז הארץ וכה שונה
+        ומיוחד – נופים קסומים, מעיינות חיים ומעינות מרפא, שלווה לנפש ולגוף! גם מלכי קדם לא פספסו סגולות אלו ובנו באזור
+        מהיפים בארמונותיהם. הגדילו לעשות מלכי החשמונאים, אשר הקימו במדבר יהודה את ארמונות החורף המסוגננים שלהם.
+      </p>
+      <p class="subheader">
+        האדריכל כפיר וקס, מהאדריכלים הסביבתיים המובילים בארץ, מתמחה בבניית בתים פרטיים לאורכו של ה"שבר הסורי
+        אפריקאי", מרמת הגולן ועד לערבה.
+      </p>
+      <a href="#contacts" class="link-arrow">ליצירת קשר</a>
+    </FeatureSection>
+
+    <FeatureSection id="developer" image={imgDeveloper} imageAlt="הרי זהב — פרויקטים קהילתיים" imageFirstOnMobile split="even">
+      <h2 class="section-title">הרי זהב</h2>
+      <p>
+        חברת ״הרי זהב״ מתמחה בבניית ישובים והקמת שכונות קהילתיות בישובים קיימים. כיום החברה יוזמת ומתכננת אלפי
+        יחידות דיור. ל״הרי זהב״ ניסיון מוכח ביזום של פרויקטים מאתגרים ולחברה יכולות ניתוח ותכנון ההופכות את הפרויקטים
+        שלה למיוחדים ומבוקשים. החברה סימנה את בקעת ים המלח ובקעת הירדן כאזור בעל פוטנציאל גבוה למשפחות שמחפשות חיי
+        קהילה בסביבה מיוחדת.
+      </p>
+      <a href="#contacts" class="link-arrow text-heading">ליצירת קשר</a>
+      <Cards slot="after" />
+    </FeatureSection>
+
+    <Contact />
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .lead {
+    padding-block: 45px;
+  }
+
+  .lead-title {
+    font-size: 28px;
+    font-weight: 600;
+    color: #111;
+
+    @media (width >= 992px) {
+      margin-bottom: 30px;
+    }
+  }
+</style>

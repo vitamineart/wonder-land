@@ -1,0 +1,65 @@
+---
+// Variable Rubik, self-hosted. unicode-range means browsers only download the Hebrew + Latin files actually used.
+import '@fontsource-variable/rubik/wght.css';
+import '../styles/global.css';
+import { getImage } from 'astro:assets';
+import ogSource from '../assets/images/main-video-poster.jpg';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+const og = await getImage({ src: ogSource, width: 1200, format: 'jpg' });
+const ogUrl = new URL(og.src, Astro.site ?? Astro.url).href;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url).href;
+---
+
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="theme-color" content="#ff7214" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="he_IL" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Mark JS as available before first paint so reveal animations don't flash -->
+    <script is:inline>document.documentElement.classList.add('js');</script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">דלג לתוכן</a>
+    <slot />
+    <script>
+      import '../scripts/reveal';
+    </script>
+  </body>
+</html>
+
+<style>
+  .skip-link {
+    position: absolute;
+    inset-inline-start: 1rem;
+    top: -100px;
+    z-index: 1000;
+    padding: 10px 16px;
+    background: var(--accent);
+    color: var(--white);
+    border-radius: 0 0 8px 8px;
+
+    &:focus {
+      top: 0;
+    }
+  }
+</style>

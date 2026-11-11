@@ -1,0 +1,127 @@
+---
+/**
+ * Lead form handled by Netlify Forms (no backend needed).
+ * Netlify detects forms with `data-netlify="true"` in the built HTML at deploy time.
+ * Without JS the form posts normally and lands on /thanks/; with JS it submits in place.
+ */
+interface Props {
+  formName: string; // shows up as a separate form in the Netlify dashboard
+  idPrefix: string;
+  buttonLabel: string;
+  layout?: 'row' | 'grid';
+}
+
+const { formName, idPrefix, buttonLabel, layout = 'row' } = Astro.props;
+const fields = [
+  { name: 'name', type: 'text', label: 'שמכם המלא', autocomplete: 'name', required: true },
+  { name: 'phone', type: 'tel', label: 'מספר טלפון', autocomplete: 'tel', required: true },
+  { name: 'email', type: 'email', label: 'כתובת דוא״ל', autocomplete: 'email', required: false },
+] as const;
+---
+
+<form
+  name={formName}
+  method="POST"
+  action="/thanks/"
+  data-netlify="true"
+  netlify-honeypot="bot-field"
+  data-ajax-form
+  class:list={['lead-form', `lead-form--${layout}`]}
+>
+  <input type="hidden" name="form-name" value={formName} />
+  <p class="visually-hidden">
+    <label>אל תמלאו שדה זה: <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+  </p>
+
+  {
+    fields.map((f, i) => (
+      <div class="lead-field" data-reveal="down" style={`--delay:${0.1 + i * 0.2}s`}>
+        <label class="visually-hidden" for={`${idPrefix}-${f.name}`}>
+          {f.label}
+        </label>
+        <input
+          class="field"
+          id={`${idPrefix}-${f.name}`}
+          name={f.name}
+          type={f.type}
+          placeholder={f.label}
+          autocomplete={f.autocomplete}
+          required={f.required}
+          inputmode={f.type === 'tel' ? 'tel' : undefined}
+          pattern={f.type === 'tel' ? '[0-9+\\-\\s()]{9,15}' : undefined}
+        />
+      </div>
+    ))
+  }
+
+  <button class="btn" type="submit" data-reveal="down" style="--delay:.6s">{buttonLabel}</button>
+  <p class="form-status" role="status" aria-live="polite"></p>
+</form>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('form[data-ajax-form]').forEach((form) => {
+    const status = form.querySelector<HTMLElement>('.form-status')!;
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      button.disabled = true;
+      status.textContent = '';
+      try {
+        const body = new URLSearchParams(new FormData(form) as unknown as Record<string, string>);
+        const res = await fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: body.toString(),
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        form.reset();
+        form.classList.add('is-sent');
+        status.textContent = 'תודה! נחזור אליכם בהקדם.';
+      } catch {
+        status.textContent = 'משהו השתבש. נסו שוב או התקשרו אלינו.';
+      } finally {
+        button.disabled = false;
+      }
+    });
+  });
+</script>
+
+<style>
+  .lead-form {
+    display: grid;
+    gap: 10px;
+  }
+
+  .lead-form--row {
+    padding: 15px;
+
+    @media (width >= 992px) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .lead-form--grid {
+    @media (width >= 768px) {
+      gap: 20px;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    & .field {
+      border-radius: 0;
+      background-color: transparent;
+    }
+  }
+
+  .form-status {
+    grid-column: 1 / -1;
+    margin: 0;
+    min-height: 1.5em;
+    font-weight: 500;
+    color: var(--heading);
+
+    &:empty {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,129 @@
+---
+import { getImage } from 'astro:assets';
+import posterSrc from '../assets/images/main-video-poster.jpg';
+
+const poster = await getImage({ src: posterSrc, width: 1400, format: 'webp', quality: 72 });
+---
+
+<section class="video-section bg-lightgray" aria-labelledby="video-title">
+  <div class="container text-center">
+    <p class="text-accent" data-reveal="down" style="--delay:.2s">צפו בסרטון: דגמי ארמונות החורף</p>
+    <h2 id="video-title" class="text-big section-title" data-reveal="down" style="--delay:.4s">
+      הסיפור האדריכלי מאחורי “מצוק יעלים”
+    </h2>
+
+    <div class="video-frame" data-reveal="fade">
+      <video id="main-video" preload="none" poster={poster.src} playsinline>
+        <source src="/video/main-video.mp4" type="video/mp4" />
+      </video>
+      <button id="main-video-play" class="play-btn" type="button" aria-label="הפעלת הסרטון">
+        <span class="play-icon" aria-hidden="true"></span>
+      </button>
+    </div>
+
+    <p class="video-caption" data-reveal="down" style="--delay:.2s">
+      האדריכל כפיר וקס, מהאדריכלים הסביבתיים המובילים בארץ, מתמחה בבניית בתים פרטיים לאורכו של ה"שבר הסורי
+      אפריקאי", מרמת הגולן ועד לערבה. בהשראת ארמונות החשמונאים יצר כפיר את דגמי השכונה הייחודיים והקפיד להתאימם
+      לסביבה ולאקלים האזורי. מבנה הדגמים, נשען על החכמה המצטברת של אלפי שנות בניה באזור והותאם באופן הרמוני לצרכי
+      החיים המודרניים.
+    </p>
+    <a href="#contacts" class="btn" data-reveal="down" style="--delay:.4s">צרו קשר</a>
+  </div>
+</section>
+
+<script>
+  const video = document.getElementById('main-video') as HTMLVideoElement;
+  const button = document.getElementById('main-video-play') as HTMLButtonElement;
+
+  button.addEventListener('click', () => {
+    video.controls = true;
+    button.hidden = true;
+    void video.play();
+    video.focus();
+  });
+</script>
+
+<style>
+  .video-frame {
+    position: relative;
+    max-width: 947px;
+    margin: 30px auto;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--dark);
+
+    & video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .video-caption {
+    max-width: 947px;
+    margin-inline: auto;
+    margin-bottom: 1.5rem;
+  }
+
+  @keyframes pulse {
+    to {
+      transform: scale(2.5);
+      opacity: 0;
+    }
+  }
+
+  .play-btn {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 60px;
+    height: 60px;
+    border: 0;
+    border-radius: 50%;
+    background-color: var(--accent);
+    cursor: pointer;
+    isolation: isolate;
+    transition: background-color 0.3s ease;
+
+    &[hidden] {
+      display: none;
+    }
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background-color: var(--accent);
+      opacity: 0.3;
+      z-index: -1;
+    }
+    &::before {
+      transform: scale(1.3);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      &::after {
+        animation: pulse 2s infinite ease-in-out;
+      }
+      &:hover::after {
+        animation-play-state: paused;
+      }
+    }
+
+    &:hover {
+      background-color: color-mix(in hsl, var(--accent), white 20%);
+    }
+  }
+
+  .play-icon {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 11px;
+    height: 11px;
+    translate: 2px 0;
+    background: url('../assets/icons/icon-play.svg') no-repeat center / contain;
+  }
+</style>

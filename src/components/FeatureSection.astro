@@ -1,0 +1,118 @@
+---
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  id?: string;
+  image: ImageMetadata;
+  imageAlt: string;
+  /** Desktop: which side the image is on. RTL: "start" = right, "end" = left. */
+  imageSide?: 'start' | 'end';
+  /** Mobile: show the image above the text */
+  imageFirstOnMobile?: boolean;
+  /** "wide" = text 7/12 on tablets (default), "even" = 50/50 */
+  split?: 'wide' | 'even';
+  gray?: boolean;
+}
+
+const {
+  id,
+  image,
+  imageAlt,
+  imageSide = 'end',
+  imageFirstOnMobile = false,
+  split = 'wide',
+  gray = false,
+} = Astro.props;
+---
+
+<section id={id} class:list={[{ 'bg-lightgray': gray }]}>
+  <div class="container">
+    <div
+      class:list={[
+        'feature',
+        `feature--img-${imageSide}`,
+        `feature--${split}`,
+        { 'feature--img-first-mobile': imageFirstOnMobile },
+      ]}
+    >
+      <div class="feature-text" data-reveal="fade">
+        <slot />
+      </div>
+      <div class="feature-media" data-reveal="fade" style="--delay:.2s">
+        <Picture
+          src={image}
+          alt={imageAlt}
+          formats={['avif', 'webp']}
+          widths={[400, 600, 900, 1200]}
+          sizes="(width >= 992px) 540px, (width >= 768px) 42vw, 100vw"
+          layout="none"
+          quality={72}
+          loading="lazy"
+        />
+      </div>
+    </div>
+    <slot name="after" />
+  </div>
+</section>
+
+<style>
+  .feature {
+    display: grid;
+    gap: 30px;
+    align-items: center;
+
+    @media (width >= 768px) {
+      grid-template-columns: 7fr 5fr;
+      grid-template-areas: 'text media';
+    }
+    @media (width >= 992px) {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .feature--even {
+    @media (width >= 768px) {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  /* RTL grid: first column is on the right. */
+  .feature--img-start {
+    @media (width >= 768px) {
+      grid-template-columns: 5fr 7fr;
+      grid-template-areas: 'media text';
+    }
+    @media (width >= 992px) {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (width >= 768px) {
+    .feature-text {
+      grid-area: text;
+    }
+    .feature-media {
+      grid-area: media;
+    }
+  }
+  .feature-media {
+
+    & :global(img) {
+      width: 100%;
+      height: auto;
+      max-height: 560px;
+      object-fit: contain;
+    }
+  }
+
+  @media (width < 768px) {
+    .feature--img-first-mobile .feature-media {
+      order: -1;
+    }
+  }
+
+  .feature-text :global(:is(h2, .section-title)) {
+    margin-bottom: 1rem;
+  }
+</style>

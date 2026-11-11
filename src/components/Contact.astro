@@ -1,0 +1,83 @@
+---
+import LeadForm from './LeadForm.astro';
+import iconMap from '../assets/icons/icon-map.svg?url';
+import iconPhone from '../assets/icons/icon-phone.svg?url';
+import iconEmail from '../assets/icons/icon-email.svg?url';
+
+// TODO: replace the placeholder email with the real address before launch.
+const contact = {
+  place: 'קיבוץ מצפה שלם',
+  phone: '073-706-9360',
+  email: 'email@email.co.il',
+};
+---
+
+<section class="contact bg-lightgray" id="contacts" aria-labelledby="contact-title">
+  <div class="container">
+    <h2 id="contact-title" class="section-title" data-reveal="fade">צרו קשר</h2>
+    <div class="contact-grid">
+      <ul class="contact-list">
+        <li data-reveal="side" style="--delay:.1s">
+          <img src={iconMap} alt="" width="25" height="25" />
+          <span>{contact.place}</span>
+        </li>
+        <li data-reveal="side" style="--delay:.3s">
+          <img src={iconPhone} alt="" width="24" height="24" />
+          <a href={`tel:+972${contact.phone.replace(/^0|-/g, '')}`} dir="ltr">{contact.phone}</a>
+        </li>
+        <li data-reveal="side" style="--delay:.5s">
+          <img src={iconEmail} alt="" width="23" height="21" />
+          <a href={`mailto:${contact.email}`}>{contact.email}</a>
+        </li>
+      </ul>
+      <LeadForm formName="contact" idPrefix="cs" buttonLabel="שלחו פרטי יצירת קשר" layout="grid" />
+    </div>
+  </div>
+</section>
+
+<style>
+  .section-title {
+    font-size: 30px;
+    margin-bottom: 30px;
+  }
+
+  .contact-grid {
+    display: grid;
+    gap: 3rem;
+
+    @media (width >= 576px) {
+      grid-template-columns: auto 1fr;
+      align-items: start;
+    }
+    @media (width >= 768px) {
+      gap: 4rem;
+    }
+  }
+
+  .contact-list {
+    display: grid;
+    gap: 15px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    @media (width >= 576px) {
+      gap: 30px;
+    }
+
+    & li {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      color: var(--heading);
+    }
+
+    & a {
+      color: inherit;
+
+      &:hover {
+        color: var(--accent);
+      }
+    }
+  }
+</style>
