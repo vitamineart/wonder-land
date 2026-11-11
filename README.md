@@ -50,13 +50,6 @@ public/
   favicon.png
 ```
 
-## Before going live
-
-- [ ] Set the real domain in `astro.config.mjs` → `site` (used for canonical + og:image URLs)
-- [ ] Replace the placeholder email `email@email.co.il` in `src/components/Contact.astro`
-- [ ] In Netlify → Forms, enable form detection and add an email notification for `lead` and `contact`
-- [ ] Optional: host the main video on Vimeo/YouTube instead of self-hosting the 18.7 MB file
-
 ## What changed vs. the 2020 version
 
 - Fixed: broken `og:title`/`og:image` meta, empty `lang`, wrong favicon path, unclosed `<div>`,
