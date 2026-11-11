@@ -2,7 +2,8 @@
 /**
  * Lead form handled by Netlify Forms (no backend needed).
  * Netlify detects forms with `data-netlify="true"` in the built HTML at deploy time.
- * Without JS the form posts normally and lands on /thanks/; with JS it submits in place.
+ * Without JS the form posts normally and lands on /thanks/; with JS it submits via fetch,
+ * then redirects to /thanks/ on success and shows errors inline.
  */
 interface Props {
   formName: string; // shows up as a separate form in the Netlify dashboard
@@ -75,12 +76,11 @@ const fields = [
           body: body.toString(),
         });
         if (!res.ok) throw new Error(String(res.status));
-        form.reset();
-        form.classList.add('is-sent');
-        status.textContent = 'תודה! נחזור אליכם בהקדם.';
+        // Success: go to the thank-you page (same page the no-JS fallback lands on)
+        window.location.assign(form.action);
       } catch {
+        // Errors stay inline so the visitor keeps what they typed
         status.textContent = 'משהו השתבש. נסו שוב או התקשרו אלינו.';
-      } finally {
         button.disabled = false;
       }
     });
